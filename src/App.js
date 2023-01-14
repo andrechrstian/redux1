@@ -1,35 +1,40 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Result from './component/Result';
-
+import { counterReducer } from './redux/Reducer/counterReducer';
+import { kurangAngka, tambahAngka } from './action/counterAction';
+import { handleAuth, masuk } from './action/authAction';
+import { authReducer } from './redux/Reducer/authReducer';
+ 
 
 
 function App() {
-  const [num, setNum] = useState(0)
+  
+  const {total} = useSelector ((rootReducer) => rootReducer.counter);
+  const {isLogin} = useSelector ((rootReducer) => rootReducer.auth);
+  
+  const dispatch = useDispatch();
 
-  //cara terima data dari redux aka storenya
-  const {total} = useSelector ((state) => state);
-  console.log(total);
+  const onAdd = () => {dispatch(tambahAngka(total))}
+  const onMin = () => {dispatch(kurangAngka(total))}
+  const onAuth = () => {dispatch(handleAuth(isLogin))}
 
-
-  const  tambahAngka = () =>  {
-    setNum(num+1)
-  }
-
-  const kurangAngka = () => {
-    setNum(num-1)
-  }
+ console.log (isLogin)
  
   return (
     <div className='page1'>
-      <button onClick={tambahAngka}>+</button>
-      <button onClick={kurangAngka}>-</button>
-      <h1>{num}</h1>
+      <button onClick={onAdd}>+</button>
+      <button onClick={onMin}>-</button>
       <h1>{total}</h1>
+
       <Result/>
-  
+
+      <p>{isLogin ? "Anda Sudah Login" : "Silahkan Login"}</p>
+      <button onClick={onAuth}>{isLogin ? "Logout" : "Login"}</button>
+     
+      
     </div>
   );
 }

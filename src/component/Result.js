@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 
 const Result = () => {
-    const {total} = useSelector ((state)=> state)
+    const {total} = useSelector ((rootReducer)=> rootReducer.counter)
     console.log(total);
 
 
